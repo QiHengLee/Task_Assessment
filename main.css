@@ -178,4 +178,5 @@ body {
 
 a, a:visited{
     color: #464646;
+    text-decoration: none;
 }
