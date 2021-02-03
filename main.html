@@ -18,24 +18,24 @@
   <div id="bottom"></div>
   <div id="content">
     <div id="box">
-      <img id="avatar" src="avatar.png" alt="">
+      <img id="avatar" src="pictures/avatar.png" alt="">
     </div>
-    <div id="username">johnny293</div>
+    <div id="username">j</div>
     <div id="inner_content">
       <div id="tagged">
         <div class="title">Tagged</div>
-        <div class="value">1</div>
+        <div id="tagVal" class="value"></div>
       </div>
       <div id="captured">
         <div class="title">Captured</div>
-        <div class="value">2</div>
+        <div id="capVal" class="value"></div>
       </div>
       <div id="vertical"></div>
       <div id="ranking">
         <div class="title">Ranking</div>
         <div class="value">
-          <span>1</span>
-          <span style="font-size: 14px; font-family: 'Nunito', sans-serif; font-weight: 400; color: #898989;">/ 2</span>
+          <span id="rankVal" ></span>
+          <span id="totalVal" style="font-size: 14px; font-family: 'Nunito', sans-serif; font-weight: 400; color: #898989;"></span>
         </div>
       </div>
       <br>
@@ -46,11 +46,11 @@
       </div>
       <a href="">
         <div id="container">
-          <span id="writer">AlexS</span>
-          <span id="elapsed">57m</span>
+          <span id="writer"></span>
+          <span id="elapsed"></span>
           <br>
           <div id="post_container">
-            <span id="tag">@johnny293</span> do you know how this was done?
+            <span id="tag"></span><span id="post_content"></span>
           </div>  
         </div>
       </a>
@@ -58,6 +58,54 @@
     <br>
     
   </div>
-  <!-- <script src="js/scripts.js"></script> -->
+  <script type="text/javascript">
+      // TODO: Fetch contact.json data from the server and display it in the contactTable
+      // var data;
+      var xhr=new XMLHttpRequest();
+      xhr.onreadystatechange=function(){
+            if (this.status==200 && this.readyState==4) {
+                var data=JSON.parse(xhr.responseText);
+                console.log(data);
+                document.getElementById("username").innerHTML=data[0]["username"];
+                document.getElementById("tagVal").innerHTML=data[0]["tag"];
+                document.getElementById("capVal").innerHTML=data[0]["captured"];
+            }
+      };
+      xhr.open("GET","getUser", false);
+      xhr.send();
+
+      xhr.onreadystatechange=function(){
+            if (this.status==200 && this.readyState==4) {
+                var data=JSON.parse(xhr.responseText);
+                console.log(data);
+                document.getElementById("rankVal").innerHTML=data[0]["rank"];
+            }
+      };
+      xhr.open("GET","getRank", false);
+      xhr.send();
+
+      xhr.onreadystatechange=function(){
+            if (this.status==200 && this.readyState==4) {
+                var data=JSON.parse(xhr.responseText);
+                console.log(data);
+                document.getElementById("totalVal").innerHTML="/ " + data[0]["COUNT(*)"];
+            }
+      };
+      xhr.open("GET","getTotal", false);
+      xhr.send();
+
+      xhr.onreadystatechange=function(){
+            if (this.status==200 && this.readyState==4) {
+                var data=JSON.parse(xhr.responseText);
+                console.log(data);
+                document.getElementById("writer").innerHTML=data[0]["writer"];
+                document.getElementById("tag").innerHTML= "@" + data[0]["tagged"];
+                document.getElementById("elapsed").innerHTML=data[0]["elapsed"] + "m";
+                document.getElementById("post_content").innerHTML= " " + data[0]["content"];
+            }
+      };
+      xhr.open("GET","mention", false);
+      xhr.send();
+  </script>
 </body>
 </html>
